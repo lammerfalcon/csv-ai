@@ -3,4 +3,8 @@ export default defineEventHandler(async (event) => {
         prompt: 'Who is the author of Nuxt?'
     })
     console.log(response)
+    return {
+        statusCode: 200
+        body: response
+    }
 })
