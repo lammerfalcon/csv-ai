@@ -25,6 +25,10 @@ export default defineEventHandler(async (event) => {
     const response = await hubAI().run('@cf/deepseek-ai/deepseek-r1-distill-qwen-32b', {
         prompt: 'Who is the author of Nuxt?'
     })
+    return {
+        statusCode: 200,
+        body: response
+    }
 
     const aiResponse = await ai.run('@cf/meta/llama-3.1-8b-instruct', {
         prompt: `Given a CSV with the following columns: ${headers.join(
