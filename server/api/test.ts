@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     })
     console.log(response)
     return {
-        statusCode: 200
+        statusCode: 200,
         body: response
     }
 })
