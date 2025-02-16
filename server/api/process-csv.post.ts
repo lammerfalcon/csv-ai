@@ -4,11 +4,11 @@ import { Readable } from 'stream';
 import {Transform} from "node:stream";
 
 export default defineEventHandler(async (event) => {
+    console.log(123)
     // Parse the multipart form data
     const form = await readMultipartFormData(event);
     const csvFile = form?.find((field) => field.name === 'file')?.data;
     const userPrompt = form?.find((field) => field.name === 'prompt')?.data.toString();
-
     if (!csvFile || !userPrompt) {
         throw createError({ statusCode: 400, message: 'File and prompt are required.' });
     }
@@ -22,6 +22,10 @@ export default defineEventHandler(async (event) => {
 
     // Generate the filtering function using the AI model
     const ai = hubAI();
+    const response = await hubAI().run('@cf/deepseek-ai/deepseek-r1-distill-qwen-32b', {
+        prompt: 'Who is the author of Nuxt?'
+    })
+
     const aiResponse = await ai.run('@cf/meta/llama-3.1-8b-instruct', {
         prompt: `Given a CSV with the following columns: ${headers.join(
             ', '
@@ -39,6 +43,7 @@ export default defineEventHandler(async (event) => {
     const transformStream = new Transform({
         objectMode: true,
         transform(row, encoding, callback) {
+            console.log(row)
             try {
                 if (filterFunction(row)) {
                     callback(null, row);

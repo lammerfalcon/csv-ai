@@ -33,7 +33,10 @@ const submitForm = async () => {
   formData.append('prompt', prompt.value);
 
   try {
-    const response = await fetch('/api/process-csv', {
+    const test = await $fetch('/api/test', {
+      method: 'get',
+    });
+    const response = await $fetch('/api/process-csv', {
       method: 'POST',
       body: formData,
     });
